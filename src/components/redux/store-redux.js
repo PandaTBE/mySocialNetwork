@@ -1,5 +1,5 @@
 import sideBarReducer from './sideBarReducer';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import profileReducer from './profileReducer';
 import dialogsReducer from './dialogsReducer';
 import usersReduser from './usersReduser';
@@ -9,7 +9,7 @@ import { reducer as formReducer } from 'redux-form'
 import appReducer from './appReducer';
 
 
-const redusers = combineReducers({
+const reducers = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sideBar: sideBarReducer,
@@ -19,6 +19,8 @@ const redusers = combineReducers({
     app: appReducer
 });
 
-let store = createStore(redusers, applyMiddleware(thunkMiddleware));
-window.store = store;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
+
+
 export default store;
