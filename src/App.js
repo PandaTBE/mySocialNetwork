@@ -9,12 +9,16 @@ import Settings from "./components/settings/settings";
 import Friends from "./components/friends/friends";
 import DialogsContainer from "./components/dialogs/dialogsContainer";
 import UsersContainer from "./components/users/usersContainer";
-import ProfileContainer from "./components/profile/profileContainer";
-import Login from "./components/login/login";
+//import ProfileContainer from "./components/profile/profileContainer";
 import { connect } from "react-redux";
 import { initializeApp } from './components/redux/appReducer';
 import { compose } from "redux";
 import Preloader from "./components/common/preloader/preloader";
+import { withSuspense } from "./components/hoc/withSuspense";
+//import Login from "./components/login/login";
+const Login = React.lazy(() => import('./components/login/login')); // Ленивая загрузка
+const ProfileContainer = React.lazy(() => import('./components/profile/profileContainer'));
+
 
 const Wrapper = styled.div`
   max-width: 1140px;
@@ -51,13 +55,13 @@ class App extends React.Component {
 				<Nav state={this.props.state.sideBar} />
 				<WrapperContent>
 					<Route path="/dialogs" render={() => <DialogsContainer />} />
-					<Route path="/profile/:userId?" render={() => <ProfileContainer />} />
+					<Route path="/profile/:userId?" render={withSuspense(ProfileContainer)} />
 					<Route path="/users" render={() => <UsersContainer />} />
 					<Route path="/news" component={News} />
 					<Route path="/music" component={Music} />
 					<Route path="/settings" component={Settings} />
 					<Route path="/friends" render={() => <Friends />} />
-					<Route path="/login" render={() => <Login />} />
+					<Route path="/login" render={withSuspense(Login)} />
 				</WrapperContent>
 
 			</Wrapper>
