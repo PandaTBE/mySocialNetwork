@@ -1,0 +1,51 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(41, 143, 226);
+  padding: 10px;
+  margin: 0;
+  min-height: 100px;
+}
+.page {
+  list-style-type: none;
+  padding: 4px;
+  border-radius: 10px;
+  margin: 0 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.break {
+  list-style-type: none;
+}
+.active {
+  border: 1px solid rgb(27, 27, 251);
+}
+.link {
+  text-align: center;
+  display: block;
+  outline: none;
+}
+.activeLink {
+  color: rgb(27, 27, 251);
+}
+.previous {
+  list-style-type: none;
+  margin-right: 20px;
+  border-radius: 10px;
+  border: 1px solid rgb(27, 27, 251);
+  padding: 4px;
+  cursor: pointer;
+}
+.next {
+  list-style-type: none;
+  margin-left: 20px;
+  border-radius: 10px;
+  border: 1px solid rgb(27, 27, 251);
+  padding: 4px;
+  cursor: pointer;
+}
+.btnLink {
+  outline: none;
+}
