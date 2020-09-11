@@ -42,7 +42,6 @@ const Dialogs = (props) => {
 
 
     };
-
     return (
         <Wrapper>
             <LeftColumn>

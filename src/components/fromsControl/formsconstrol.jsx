@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Field } from 'redux-form';
 
 const NormalInput = styled.input`
 `
@@ -13,6 +14,14 @@ export const Input = ({ input, meta, ...props }) => {
         <div>
             {hasError ? <InputError {...input} {...props} /> : <NormalInput {...input} {...props} />}
             {hasError && <span>{meta.error}</span>}
+        </div>
+    )
+}
+
+export const createField = (placeholder, name, validators, component, propsSettings, text = "") => {
+    return (
+        <div>
+            <Field {...propsSettings} name={name} placeholder={placeholder} validate={validators} component={component} /> {text}
         </div>
     )
 }
