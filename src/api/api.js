@@ -36,6 +36,15 @@ export const profileAPI = {
         return instanse.put('profile/status', {
             status
         })
+    },
+    uploadPhoto(photo) {
+        const formData = new FormData();
+        formData.append('photos', photo);
+        return instanse.put('profile/photo', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 };
 

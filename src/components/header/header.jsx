@@ -17,6 +17,7 @@ const Img = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  margin-right: 10px;
 `;
 const NavLinkS = styled(NavLink)`
 color:#ffff;
@@ -31,6 +32,13 @@ const Wrapper = styled.div`
 display: flex;
 align-items: center;
 `
+const AutorizedUserPhoto = styled.img`
+ width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+
+`
 
 
 const Header = (props) => {
@@ -41,9 +49,9 @@ const Header = (props) => {
         alt="logo"
       />
       <Wrapper>
+        {props.userPhoto ? <AutorizedUserPhoto src={props.userPhoto} alt="userPhoto" /> : <Img src={userPhoto} alt="userPhoto" />}
         {props.isAuth ? <NavLinkS to="/profile"><User>{props.login}</User></NavLinkS>
           : <NavLinkS to="/login">Login</NavLinkS>}
-        {props.userPhoto ? <img src={props.userPhoto} alt="userPhoto" /> : <Img src={userPhoto} alt="userPhoto" />}
         {props.isAuth ? <button onClick={props.logout}>Logut</button> : null}
 
       </Wrapper>

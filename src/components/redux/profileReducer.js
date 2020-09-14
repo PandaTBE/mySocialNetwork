@@ -2,7 +2,8 @@ import { profileAPI } from "../../api/api";
 
 const ADD_POST = "ADD-POST",
 	SET_USER_PROFILE = "SET-USER-PROFILE",
-	SET_USER_STATUS = "SET-USER-STATUS";
+	SET_USER_STATUS = "SET-USER-STATUS",
+	NEW_PHOTO = "NEW-PHOTO";
 
 
 const initialState = {
@@ -37,6 +38,11 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				status: action.status
 			}
+		case NEW_PHOTO:
+			return {
+				...state,
+				profile: { ...state.profile, photos: action.photo }
+			}
 		default:
 			return state;
 	}
@@ -44,6 +50,7 @@ const profileReducer = (state = initialState, action) => {
 export const addPostActionCreator = (newPost) => ({ type: ADD_POST, newPost })
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile })
 export const setUserStatus = (status) => ({ type: SET_USER_STATUS, status })
+export const newPhoto = (photo) => ({ type: NEW_PHOTO, photo })
 
 export const setProfile = (userId) => {
 	return async (dispatch) => {
@@ -63,5 +70,11 @@ export const updateUserStatus = (status) => async (dispatch) => {
 	}
 }
 
+export const updatePhoto = (photo) => async (dispatch) => {
+	const response = await profileAPI.uploadPhoto(photo);
+	if (response.data.resultCode === 0) {
+		dispatch(newPhoto(response.data.data.photos))
+	}
+}
 
 export default profileReducer;
