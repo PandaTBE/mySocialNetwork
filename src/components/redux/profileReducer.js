@@ -77,4 +77,12 @@ export const updatePhoto = (photo) => async (dispatch) => {
 	}
 }
 
+export const setContactsForm = (formData) => async (dispatch, getState) => {
+	const userId = getState().auth.id;
+	const response = await profileAPI.setContacts(formData);
+	if (response.data.resultCode === 0) {
+		dispatch(setProfile(userId));
+	}
+}
+
 export default profileReducer;

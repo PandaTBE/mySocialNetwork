@@ -45,6 +45,9 @@ export const profileAPI = {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    },
+    setContacts(formData) {
+        return instanse.put('profile', formData)
     }
 };
 

@@ -45,7 +45,7 @@ export const authMe = () => {
     }
 };
 
-export const login = (email, password, rememberMe = false) => {
+export const login = (email, password, rememberMe = true) => {
     return async (dispatch) => {
         const response = await headerAPI.login(email, password, rememberMe)
         if (response.data.resultCode === 0) {

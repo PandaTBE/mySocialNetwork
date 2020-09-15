@@ -1,7 +1,9 @@
 import React from "react";
+import { useState } from "react";
 import styled from 'styled-components/macro';
 import Preloader from "../../common/preloader/preloader";
 import StatusWithHook from "./statusWithHook";
+import ContactsForm from './contactsForm';
 
 const ProfileDecor = styled.div`
 display: flex;
@@ -26,6 +28,9 @@ width: 100%;
 `
 
 const ProfileInfo = (props) => {
+
+    const [editMode, setEditMode] = useState(false);
+
     if (!props.profile) {
         return <Preloader />
     }
@@ -34,6 +39,11 @@ const ProfileInfo = (props) => {
             props.updatePhoto(e.target.files[0])
         }
     }
+    const contactsFormSubmit = (formData) => {
+        props.setContactsForm(formData);
+        setEditMode(false);
+    }
+
     return (
         <div>
             <ProfileDecor>
@@ -46,13 +56,36 @@ const ProfileInfo = (props) => {
                     <StatusWithHook status={props.status} updateUserStatus={props.updateUserStatus} />
                 </ProfileAvatarWr>
                 <Wrapper>
-                    <div>{"My name is: " + props.profile.fullName}</div>
-                    <div>{props.profile.lookingForAJob ? 'I am lokkiing for a job' : 'I am working'}</div>
-                    <div>{`a little about me: ${props.profile.aboutMe}`}</div>
+                    {
+                        editMode ? <ContactsForm initialValues={props.profile} onSubmit={contactsFormSubmit} /> : <Contacts profile={props.profile} setEditMode={setEditMode} />
+                    }
                 </Wrapper>
             </ProfileDecor>
         </div>
     )
 };
+
+export const Contact = ({ contactKey, contactValue }) => {
+    return (
+        <div>
+            {contactKey}:{contactValue}
+        </div>
+    )
+}
+const Contacts = ({ profile, setEditMode }) => {
+    return (
+        <div>
+            <div>{"My name is: " + profile.fullName}</div>
+            <div>{profile.lookingForAJob ? 'I am working' : 'I am lokkiing for a job'}</div>
+            <div>{profile.lookingForAJobDescription}</div>
+            <div>{`a little about me: ${profile.aboutMe ? profile.aboutMe : ""}`}</div>
+            <div><b>Contacts</b> {Object.keys(profile.contacts)
+                .map(key => <Contact key={key} contactKey={key} contactValue={profile.contacts[key]} />)}
+            </div>
+            <button onClick={() => setEditMode(true)}>Edit</button>
+        </div>
+    )
+}
+
 
 export default ProfileInfo;
