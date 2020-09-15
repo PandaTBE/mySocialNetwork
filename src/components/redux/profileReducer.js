@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { profileAPI } from "../../api/api";
 
 const ADD_POST = "ADD-POST",
@@ -82,6 +83,10 @@ export const setContactsForm = (formData) => async (dispatch, getState) => {
 	const response = await profileAPI.setContacts(formData);
 	if (response.data.resultCode === 0) {
 		dispatch(setProfile(userId));
+	} else {
+		const message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+		dispatch(stopSubmit('contactsForm', { _error: message }))
+		return Promise.reject(message);
 	}
 }
 

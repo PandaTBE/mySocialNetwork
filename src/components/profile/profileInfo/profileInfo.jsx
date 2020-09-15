@@ -40,8 +40,11 @@ const ProfileInfo = (props) => {
         }
     }
     const contactsFormSubmit = (formData) => {
-        props.setContactsForm(formData);
-        setEditMode(false);
+        props.setContactsForm(formData)
+            .then(() => {
+                setEditMode(false);
+            })
+
     }
 
     return (
@@ -57,7 +60,7 @@ const ProfileInfo = (props) => {
                 </ProfileAvatarWr>
                 <Wrapper>
                     {
-                        editMode ? <ContactsForm initialValues={props.profile} onSubmit={contactsFormSubmit} /> : <Contacts profile={props.profile} setEditMode={setEditMode} />
+                        editMode ? <ContactsForm initialValues={props.profile} profile={props.profile} onSubmit={contactsFormSubmit} /> : <Contacts profile={props.profile} setEditMode={setEditMode} />
                     }
                 </Wrapper>
             </ProfileDecor>
@@ -68,7 +71,7 @@ const ProfileInfo = (props) => {
 export const Contact = ({ contactKey, contactValue }) => {
     return (
         <div>
-            {contactKey}:{contactValue}
+            {contactKey}: {contactValue}
         </div>
     )
 }
