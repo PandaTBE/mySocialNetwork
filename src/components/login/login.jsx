@@ -18,22 +18,24 @@ width: 25%;
 text-align: center;
 `
 
-const LoginForm = ({ handleSubmit, error }) => {
+const LoginForm = ({ handleSubmit, error, captchaUrl }) => {
     return (
         <form onSubmit={handleSubmit}>
             {createField("Email", "email", [required], Input, { type: "text" })}
             {createField("Password", "password", [required], Input, { type: "password" })}
             {createField(null, "remeberMe", [], Input, { type: "checkbox" }, "Remember me")}
+            {captchaUrl && <img src={captchaUrl} alt="captcha" />}
+            {captchaUrl && createField("Symbols from image", "captcha", [required], Input, { type: "text" })}
             {error && <Error>{error}</Error>}
             <button>Login</button>
         </form>
     )
 }
 const LoginReduxForm = reduxForm({ form: 'login' })(LoginForm)
-const Login = ({ login, isAuth }) => {
+const Login = ({ login, isAuth, captchaUrl }) => {
     const onSubmit = (formData) => {
-        const { email, password } = formData;
-        login(email, password);
+        const { email, password, remeberMe, captcha } = formData;
+        login(email, password, remeberMe, captcha);
     }
     if (isAuth) {
         return <Redirect to="/profile" />
@@ -41,11 +43,12 @@ const Login = ({ login, isAuth }) => {
     return (
         <div>
             <h1>LOGIN</h1>
-            <LoginReduxForm onSubmit={onSubmit} />
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
         </div>
     )
 }
 const mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    captchaUrl: state.auth.captchaUrl
 })
 export default connect(mapStateToProps, { login })(Login);

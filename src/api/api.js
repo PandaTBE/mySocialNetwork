@@ -56,10 +56,16 @@ export const headerAPI = {
         return instanse.get('auth/me')
             .then(response => response.data)
     },
-    login(email, password, rememberMe) {
-        return instanse.post('auth/login', { email, password, rememberMe })
+    login(email, password, rememberMe = true, captcha = "") {
+        return instanse.post('auth/login', { email, password, rememberMe, captcha })
     },
     logout() {
         return instanse.delete('auth/login')
     }
 };
+
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instanse.get('security/get-captcha-url')
+    }
+}

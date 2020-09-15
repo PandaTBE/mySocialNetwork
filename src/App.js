@@ -2,7 +2,7 @@ import React from "react";
 import HeaderContainer from "./components/header/headerContainer";
 import Nav from "./components/nav/nav";
 import styled from "styled-components";
-import { Route, withRouter } from "react-router-dom";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import News from "./components/news/news";
 import Music from "./components/music/music";
 import Settings from "./components/settings/settings";
@@ -54,14 +54,18 @@ class App extends React.Component {
 				<HeaderContainer />
 				<Nav state={this.props.state.sideBar} />
 				<WrapperContent>
-					<Route path="/dialogs" render={() => <DialogsContainer />} />
-					<Route path="/profile/:userId?" render={withSuspense(ProfileContainer)} />
-					<Route path="/users" render={() => <UsersContainer />} />
-					<Route path="/news" component={News} />
-					<Route path="/music" component={Music} />
-					<Route path="/settings" component={Settings} />
-					<Route path="/friends" render={() => <Friends />} />
-					<Route path="/login" render={withSuspense(Login)} />
+					<Switch>
+						<Route exact path="/" render={() => <Redirect to="/profile" />} />
+						<Route path="/dialogs" render={() => <DialogsContainer />} />
+						<Route path="/profile/:userId?" render={withSuspense(ProfileContainer)} />
+						<Route path="/users" render={() => <UsersContainer />} />
+						<Route path="/news" component={News} />
+						<Route path="/music" component={Music} />
+						<Route path="/settings" component={Settings} />
+						<Route path="/friends" render={() => <Friends />} />
+						<Route path="/login" render={withSuspense(Login)} />
+						<Route path="*" render={() => <div>404 page not found</div>} />
+					</Switch>
 				</WrapperContent>
 
 			</Wrapper>
