@@ -2,7 +2,7 @@ import React from "react";
 import { reduxForm } from "redux-form";
 import { Input, createField } from "../fromsControl/formsconstrol";
 import { required } from "../validators/validators";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from '../redux/authReducer'
 import { Redirect } from "react-router-dom";
 import styled from 'styled-components/macro';
@@ -32,10 +32,13 @@ const LoginForm = ({ handleSubmit, error, captchaUrl }) => {
     )
 }
 const LoginReduxForm = reduxForm({ form: 'login' })(LoginForm)
-const Login = ({ login, isAuth, captchaUrl }) => {
+const Login = (props) => {
+    const dispatch = useDispatch();
+    const isAuth = useSelector(state => state.auth.isAuth)
+    const captchaUrl = useSelector(state => state.auth.captchaUrl)
     const onSubmit = (formData) => {
         const { email, password, remeberMe, captcha } = formData;
-        login(email, password, remeberMe, captcha);
+        dispatch(login(email, password, remeberMe, captcha));
     }
     if (isAuth) {
         return <Redirect to="/profile" />
@@ -47,8 +50,4 @@ const Login = ({ login, isAuth, captchaUrl }) => {
         </div>
     )
 }
-const mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuth,
-    captchaUrl: state.auth.captchaUrl
-})
-export default connect(mapStateToProps, { login })(Login);
+export default Login;
