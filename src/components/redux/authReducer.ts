@@ -5,17 +5,21 @@ const SET_USER_AUTH = "SET-USER-AUTH",
     SET_USER_PHOTO = "SET-USER-PHOTO",
     CAPTCHA_URL = "CAPTCHA-URL";
 
-
+export type PhotosType = {
+    small: string
+    large: string
+}
 const initialState = {
-    id: null,
-    login: null,
-    email: null,
-    isAuth: false,
-    userPhoto: null,
-    captchaUrl: null
+    id: null as number | null,
+    login: null as string | null,
+    email: null as string | null,
+    isAuth: false as boolean,
+    userPhoto: null as PhotosType | null,
+    captchaUrl: null as string | null
 };
+type InitialStateType = typeof initialState
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_USER_AUTH:
             return {
@@ -36,12 +40,27 @@ const authReducer = (state = initialState, action) => {
             return state
     };
 }
-export const setUserAuth = (data) => ({ type: SET_USER_AUTH, data });
-export const setUserPhoto = (photo) => ({ type: SET_USER_PHOTO, photo });
-export const captchaUrl = (captchaUrl) => ({ type: CAPTCHA_URL, captchaUrl })
+
+type UserType = {
+    id: number
+    login: string
+    email: string
+    isAuth: boolean
+}
+export const setUserAuth = (data: UserType | object): any => ({ type: SET_USER_AUTH, data });
+type SetUserPhotoType = {
+    type: typeof SET_USER_PHOTO
+    photo: string
+}
+export const setUserPhoto = (photo: string): SetUserPhotoType => ({ type: SET_USER_PHOTO, photo });
+type CaptchaUrlType = {
+    type: typeof CAPTCHA_URL
+    captchaUrl: string | null
+}
+export const captchaUrl = (captchaUrl: string | null): CaptchaUrlType => ({ type: CAPTCHA_URL, captchaUrl })
 
 export const authMe = () => {
-    return async (dispatch) => {
+    return async (dispatch: any) => {
         const data = await headerAPI.auth()
         if (data.resultCode === 0) {
             let { id, login, email } = data.data;
@@ -53,8 +72,8 @@ export const authMe = () => {
     }
 };
 
-export const login = (email, password, rememberMe, captcha) => {
-    return async (dispatch) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => {
+    return async (dispatch: any) => {
         const response = await headerAPI.login(email, password, rememberMe, captcha)
         if (response.data.resultCode === 0) {
             dispatch(authMe())
@@ -71,12 +90,12 @@ export const login = (email, password, rememberMe, captcha) => {
     }
 };
 
-export const getCaptchaUrl = () => async (dispatch) => {
+export const getCaptchaUrl = () => async (dispatch: any) => {
     const response = await securityAPI.getCaptchaUrl();
     dispatch(captchaUrl(response.data.url))
 }
 export const logout = () => {
-    return async (dispatch) => {
+    return async (dispatch: any) => {
         const response = await headerAPI.logout()
         if (response.data.resultCode === 0) {
             const obj = {

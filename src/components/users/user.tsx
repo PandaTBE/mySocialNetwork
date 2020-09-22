@@ -1,8 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components/macro";
 import Preloader from "../common/preloader/preloader";
 import Paginator from "../common/paginator/paginator";
 import SingleUser from "./singleUser";
+import { SingleUserType } from "../../api/types/types";
 
 const Block = styled.div`
   display: flex;
@@ -14,8 +15,17 @@ const UsersWrapper = styled.div`
   flex-grow: 1;
   padding: 10px;
 `;
-
-const User = ({ isFetching, users, follow, unfollow, followingInProgress, usersCount, pageSize, onPageChange }) => {
+type PropsType = {
+	isFetching: boolean
+	users: Array<SingleUserType>
+	follow: (userId: number) => void
+	unfollow: (userId: number) => void
+	followingInProgress: Array<number>
+	usersCount: number
+	pageSize: number
+	onPageChange: (pageNumber: number) => void
+}
+const User: FC<PropsType> = ({ isFetching, users, follow, unfollow, followingInProgress, usersCount, pageSize, onPageChange }) => {
 	return (
 		<Block>
 			{isFetching ? <Preloader /> : null}
