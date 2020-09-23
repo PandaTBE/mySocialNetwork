@@ -4,7 +4,7 @@ type UsersArrayType = {
     id: number
     name: string
 }
-type MessagesType = {
+export type MessagesType = {
     id: number
     message: string
 }

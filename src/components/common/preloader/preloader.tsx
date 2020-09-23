@@ -1,8 +1,6 @@
 import React from 'react';
 import preloader from '../../../assets/img/spinner.svg';
-
-
-const Preloader = (props) => {
+const Preloader = () => {
     return (
         <img src={preloader} alt="preloader" />
 

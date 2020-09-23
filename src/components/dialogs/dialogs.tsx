@@ -1,11 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from 'styled-components';
 import Dialog from './dialog/dialog'
 import User from './user/user'
 import { Field, reduxForm } from "redux-form";
 import { required } from "../validators/validators";
 import { Input } from "../fromsControl/formsconstrol";
-
+import { MessagesType } from '../redux/dialogsReducer'
+import { SingleUserType } from "../../api/types/types";
 
 const Wrapper = styled.div`
 display: flex;
@@ -32,15 +33,19 @@ overflow: auto;
 
 `
 
-const Dialogs = (props) => {
+type PropsType = {
+    messages: Array<MessagesType>
+    users: Array<SingleUserType>
+    addMessage: (newMessage: string) => void
+}
 
-    const messageComp = props.messages.map(message => <Dialog key={message.id} text={message.message} />)
-    const userComp = props.users.map(user => <User key={user.id} name={user.name} id={user.id} />)
+const Dialogs: FC<PropsType> = ({ messages, users, addMessage }) => {
 
-    const onButtonClick = (value) => {
-        props.addMessage(value.dialogsNewMessage);
+    const messageComp = messages.map(message => <Dialog key={message.id} text={message.message} />)
+    const userComp = users.map(user => <User key={user.id} name={user.name} id={user.id} />)
 
-
+    const onButtonClick = (value: any) => {
+        addMessage(value.dialogsNewMessage);
     };
     return (
         <Wrapper>
@@ -57,8 +62,7 @@ const Dialogs = (props) => {
     )
 
 };
-
-const AddMessageForm = (props) => {
+const AddMessageForm = (props: any) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <Field component={Input} validate={[required]}
