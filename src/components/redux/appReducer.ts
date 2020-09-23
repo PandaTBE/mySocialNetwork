@@ -1,4 +1,7 @@
+import { ThunkAction } from "redux-thunk";
 import { authMe } from "./authReducer";
+import { AppStateType } from "./store-redux";
+
 
 const INITIALIZED_SUCCESS: string = "INITIALIZED-SUCCESS";
 
@@ -9,7 +12,7 @@ const initialState: InitialStateType = {
 export type InitialStateType = {
     initialized: boolean
 }
-const appReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
+const appReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case INITIALIZED_SUCCESS:
             return {
@@ -25,9 +28,12 @@ const appReducer = (state: InitialStateType = initialState, action: any): Initia
 type InitializedSuccessType = {
     type: typeof INITIALIZED_SUCCESS
 }
+type ActionTypes = InitializedSuccessType
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
+
 export const initializedSuccess = (): InitializedSuccessType => ({ type: INITIALIZED_SUCCESS });
 
-export const initializeApp = () => (dispatch: any) => {
+export const initializeApp = (): ThunkType => (dispatch) => {
     const promise = dispatch(authMe())
     //dispatch(somethingelse());
     //dispatch(somethingelse());
