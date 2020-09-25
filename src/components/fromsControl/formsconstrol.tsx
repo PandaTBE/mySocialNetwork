@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Field } from 'redux-form';
+import { Field, WrappedFieldProps } from 'redux-form';
+import { FieldValidatorsType } from '../validators/validators';
 
 const NormalInput = styled.input`
 `
@@ -15,7 +16,7 @@ border: 2px solid #ff0000;
 `
 
 
-export const Input = ({ input, meta, ...props }) => {
+export const Input: FC<WrappedFieldProps> = ({ input, meta, ...props }) => {
     const hasError = meta.error && meta.touched
     return (
         <div>
@@ -25,7 +26,7 @@ export const Input = ({ input, meta, ...props }) => {
     )
 }
 
-export const TextArea = ({ input, meta, ...props }) => {
+export const TextArea: FC<WrappedFieldProps> = ({ input, meta, ...props }) => {
     const hasError = meta.error && meta.touched
     return (
         <div>
@@ -35,7 +36,11 @@ export const TextArea = ({ input, meta, ...props }) => {
     )
 }
 
-export const createField = (placeholder, name, validators, component, propsSettings, text = "") => {
+export const createField = (placeholder: string | undefined,
+    name: string,
+    validators: Array<FieldValidatorsType>,
+    component: FC<WrappedFieldProps>,
+    propsSettings = {}, text = "") => {
     return (
         <div>
             <Field {...propsSettings} name={name} placeholder={placeholder} validate={validators} component={component} /> {text}

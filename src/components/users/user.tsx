@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import Preloader from "../common/preloader/preloader";
 import Paginator from "../common/paginator/paginator";
 import SingleUser from "./singleUser";
-import { SingleUserType } from "../../api/types/types";
+import { SingleUserType } from "../../types/types";
 
 const Block = styled.div`
   display: flex;

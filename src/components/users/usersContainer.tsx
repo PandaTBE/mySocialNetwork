@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { follow, unfollow, getUsers } from "../redux/usersReduser";
 import User from "./user";
 import { takeUsers, getPageSize, getCurrentPage, getUsersCount, getIsFetching, getFollowingInProgress } from "../redux/usersSelectors";
-import { SingleUserType } from "../../api/types/types";
+import { SingleUserType } from "../../types/types";
 import { AppStateType } from "../redux/store-redux";
 type MapStatePropsType = {
   currentPage: number

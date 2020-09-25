@@ -1,4 +1,4 @@
-import { PhotosType } from './../../components/redux/authReducer';
+import { PhotosType } from '../components/redux/authReducer';
 export type SingleUserType = {
     name: string
     id: number

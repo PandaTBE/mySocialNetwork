@@ -1,3 +1,4 @@
+import { ResultCodesEnum, SetContactsFormType } from './../../api/api';
 import { stopSubmit } from "redux-form";
 import { ThunkAction } from "redux-thunk";
 import { profileAPI } from "../../api/api";
@@ -9,7 +10,7 @@ const ADD_POST = "ADD-POST",
 	SET_USER_STATUS = "SET-USER-STATUS",
 	NEW_PHOTO = "NEW-PHOTO";
 
-type ContactsType = {
+export type ContactsType = {
 	github: string
 	vk: string
 	facebook: string
@@ -19,7 +20,7 @@ type ContactsType = {
 	youtube: string
 	mainLink: string
 }
-type ProfileType = {
+export type ProfileType = {
 	userId: number
 	lookingForAJob: boolean
 	lookingForAJobDescription: string
@@ -112,22 +113,22 @@ export const getUserStatus = (userId: number): ThunkType => async (dispatch) => 
 
 export const updateUserStatus = (status: string): ThunkType => async (dispatch) => {
 	const response = await profileAPI.updateStatus(status);
-	if (response.data.resultCode === 0) {
+	if (response.data.resultCode === ResultCodesEnum.Success) {
 		dispatch(setUserStatus(status))
 	}
 }
 
 export const updatePhoto = (photo: any): ThunkType => async (dispatch) => {
-	const response = await profileAPI.uploadPhoto(photo);
-	if (response.data.resultCode === 0) {
-		dispatch(newPhoto(response.data.data.photos))
+	const data = await profileAPI.uploadPhoto(photo);
+	if (data.resultCode === ResultCodesEnum.Success) {
+		dispatch(newPhoto(data.data.photos))
 	}
 }
 
-export const setContactsForm = (formData: any): ThunkType => async (dispatch, getState: GetStateType) => {
+export const setContactsForm = (formData: SetContactsFormType): ThunkType => async (dispatch, getState: GetStateType) => {
 	const userId = getState().auth.id;
 	const response = await profileAPI.setContacts(formData);
-	if (response.data.resultCode === 0) {
+	if (response.data.resultCode === ResultCodesEnum.Success) {
 		dispatch(setProfile(userId));
 	} else {
 		const message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";

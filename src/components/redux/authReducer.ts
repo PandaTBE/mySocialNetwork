@@ -1,3 +1,4 @@
+import { ResultCodesEnum, ResultCodesWithCapthcaEnum } from './../../api/api';
 import { headerAPI, profileAPI, securityAPI } from "../../api/api";
 import { stopSubmit } from "redux-form";
 import { ThunkAction } from "redux-thunk";
@@ -72,7 +73,7 @@ export const captchaUrl = (captchaUrl: string | null): CaptchaUrlType => ({ type
 export const authMe = (): ThunkType => {
     return async (dispatch) => {
         const data = await headerAPI.auth()
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodesEnum.Success) {
             let { id, login, email } = data.data;
             dispatch(setUserAuth({ id, login, email, isAuth: true }));
             const response = await profileAPI.getUser(id)
@@ -82,10 +83,10 @@ export const authMe = (): ThunkType => {
     }
 };
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => {
     return async (dispatch) => {
         const response = await headerAPI.login(email, password, rememberMe, captcha)
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodesEnum.Success) {
             dispatch(authMe())
             dispatch(captchaUrl(null))
         }
@@ -94,7 +95,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
             const message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
             // @ts-ignore
             dispatch(stopSubmit('login', { _error: message }))
-            if (response.data.resultCode === 10) {
+            if (response.data.resultCode === ResultCodesWithCapthcaEnum.Captcha) {
                 dispatch(getCaptchaUrl());
             }
         }
@@ -108,7 +109,7 @@ export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
 export const logout = (): ThunkType => {
     return async (dispatch) => {
         const response = await headerAPI.logout()
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodesEnum.Success) {
             const obj = {
                 id: null,
                 login: null,

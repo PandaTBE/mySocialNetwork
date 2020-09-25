@@ -6,7 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import { required } from "../validators/validators";
 import { Input } from "../fromsControl/formsconstrol";
 import { MessagesType } from '../redux/dialogsReducer'
-import { SingleUserType } from "../../api/types/types";
+import { SingleUserType } from "../../types/types";
 
 const Wrapper = styled.div`
 display: flex;
