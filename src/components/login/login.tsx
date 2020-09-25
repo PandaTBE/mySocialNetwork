@@ -24,11 +24,11 @@ type OwmLoginFormType = {
 const LoginForm: FC<InjectedFormProps<LoginFormdataType, OwmLoginFormType> & OwmLoginFormType> = ({ handleSubmit, error, captchaUrl }) => {
     return (
         <form onSubmit={handleSubmit}>
-            {createField("Email", "email", [required], Input, { type: "text" })}
-            {createField("Password", "password", [required], Input, { type: "password" })}
-            {createField(undefined, "remeberMe", [], Input, { type: "checkbox" }, "Remember me")}
+            {createField<LoginFormdataTypeKeys>("Email", "email", [required], Input, { type: "text" })}
+            {createField<LoginFormdataTypeKeys>("Password", "password", [required], Input, { type: "password" })}
+            {createField<LoginFormdataTypeKeys>(undefined, "remeberMe", [], Input, { type: "checkbox" }, "Remember me")}
             {captchaUrl && <img src={captchaUrl} alt="captcha" />}
-            {captchaUrl && createField("Symbols from image", "captcha", [required], Input, { type: "text" })}
+            {captchaUrl && createField<LoginFormdataTypeKeys>("Symbols from image", "captcha", [required], Input, { type: "text" })}
             {error && <Error>{error}</Error>}
             <button>Login</button>
         </form>
@@ -41,6 +41,7 @@ type LoginFormdataType = {
     remeberMe: boolean
     captcha: string | null
 }
+type LoginFormdataTypeKeys = Extract<keyof LoginFormdataType, string>
 const Login = () => {
     const dispatch = useDispatch();
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)

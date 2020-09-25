@@ -36,11 +36,11 @@ export const TextArea: FC<WrappedFieldProps> = ({ input, meta, ...props }) => {
     )
 }
 
-export const createField = (placeholder: string | undefined,
-    name: string,
+export function createField<FormKeyType extends string>(placeholder: string | undefined,
+    name: FormKeyType,
     validators: Array<FieldValidatorsType>,
     component: FC<WrappedFieldProps>,
-    propsSettings = {}, text = "") => {
+    propsSettings = {}, text = "") {
     return (
         <div>
             <Field {...propsSettings} name={name} placeholder={placeholder} validate={validators} component={component} /> {text}
