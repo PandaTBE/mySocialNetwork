@@ -17,7 +17,7 @@ const initialState = {
     login: null as string | null,
     email: null as string | null,
     isAuth: false as boolean,
-    userPhoto: null as PhotosType | null | string,
+    userPhoto: null as string | null,
     captchaUrl: null as string | null
 };
 type InitialStateType = typeof initialState

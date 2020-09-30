@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import s from './nav.module.css';
 import Friend from "../friends/friend/friend";
+import { AppStateType } from "../redux/store-redux";
+import { useSelector } from "react-redux";
 
 const Navigation = styled.nav`
   grid-area: nav;
@@ -24,9 +26,9 @@ justify-content: center;
 margin-top: 10px;
 
 `
-const Nav = (props) => {
-
-  const friends = props.state.friends.map(friend => <Friend key={friend.id} name={friend.name} />)
+const Nav = () => {
+  const friends = useSelector((state: AppStateType) => state.sideBar.friends)
+  const friendsArr = friends.map(friend => <Friend key={friend.id} name={friend.name} />)
   return (
     <Navigation>
       <LinkWrapper>
@@ -50,7 +52,7 @@ const Nav = (props) => {
       <LinkWrapper>
         <NavLink to="/friends" className={s.link} activeClassName={s.link__active}>Feiends</NavLink>
         <FriendWrapper>
-          {friends}
+          {friendsArr}
         </FriendWrapper>
       </LinkWrapper>
     </Navigation>

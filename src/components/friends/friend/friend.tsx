@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from 'styled-components';
 
 const Img = styled.img`
@@ -21,11 +21,15 @@ margin-right: 10px;
 
 `
 
-const Friend = (props) => {
+type PropsType = {
+    name: string
+}
+
+const Friend: FC<PropsType> = ({ name }) => {
     return (
         <Item>
             <Img src="https://html5css.ru/w3css/img_avatar3.png" alt="friend" />
-            <Name>{props.name}</Name>
+            <Name>{name}</Name>
         </Item>
     )
 };

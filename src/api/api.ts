@@ -68,7 +68,7 @@ export const profileAPI = {
             status
         })
     },
-    uploadPhoto(photo: any) {
+    uploadPhoto(photo: File) {
         const formData = new FormData();
         formData.append('photos', photo);
         return instanse.put<UploadPhotoResponseType>('profile/photo', formData, {

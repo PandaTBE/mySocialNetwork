@@ -52,7 +52,7 @@ class App extends React.Component {
 		return (
 			<Wrapper>
 				<HeaderContainer />
-				<Nav state={this.props.state.sideBar} />
+				<Nav />
 				<WrapperContent>
 					<Switch>
 						<Route exact path="/" render={() => <Redirect to="/profile" />} />

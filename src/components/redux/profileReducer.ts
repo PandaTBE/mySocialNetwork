@@ -25,10 +25,11 @@ export type ProfileType = {
 	lookingForAJob: boolean
 	lookingForAJobDescription: string
 	fullName: string
+	aboutMe: string
 	contacts: ContactsType
 	photos: PhotosType
 }
-type PostsType = {
+export type PostsType = {
 	id: number
 	message: string
 	likesCount: number
@@ -39,7 +40,7 @@ const initialState = {
 		{ id: 2, message: "This is my first post", likesCount: 15 },
 		{ id: 3, message: "This is my first post", likesCount: 17 },
 	] as Array<PostsType>,
-	profile: null as ProfileType | null | object,
+	profile: null as ProfileType | null,
 	status: ""
 };
 type InitialStateType = typeof initialState
@@ -69,6 +70,7 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
 		case NEW_PHOTO:
 			return {
 				...state,
+				//@ts-ignore
 				profile: { ...state.profile, photos: action.photo }
 			}
 		default:
@@ -79,7 +81,7 @@ type AddPostActionCreatorType = {
 	type: typeof ADD_POST
 	newPost: string
 }
-export const addPostActionCreator = (newPost: string): AddPostActionCreatorType => ({ type: ADD_POST, newPost })
+export const addPost = (newPost: string): AddPostActionCreatorType => ({ type: ADD_POST, newPost })
 type SetUserProfileType = {
 	type: typeof SET_USER_PROFILE
 	profile: ProfileType
@@ -92,13 +94,13 @@ type SetUserStatusType = {
 export const setUserStatus = (status: string): SetUserStatusType => ({ type: SET_USER_STATUS, status })
 type NewPhotoType = {
 	type: typeof NEW_PHOTO
-	photo: any
+	photo: PhotosType
 }
-export const newPhoto = (photo: any): NewPhotoType => ({ type: NEW_PHOTO, photo })
+export const newPhoto = (photo: PhotosType): NewPhotoType => ({ type: NEW_PHOTO, photo })
 
 type ActionsType = AddPostActionCreatorType | SetUserProfileType | SetUserStatusType | NewPhotoType
 type GetStateType = () => AppStateType
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
+export type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 export const setProfile = (userId: number | null): ThunkType => {
 	return async (dispatch) => {
@@ -118,7 +120,7 @@ export const updateUserStatus = (status: string): ThunkType => async (dispatch) 
 	}
 }
 
-export const updatePhoto = (photo: any): ThunkType => async (dispatch) => {
+export const updatePhoto = (photo: File): ThunkType => async (dispatch) => {
 	const data = await profileAPI.uploadPhoto(photo);
 	if (data.resultCode === ResultCodesEnum.Success) {
 		dispatch(newPhoto(data.data.photos))

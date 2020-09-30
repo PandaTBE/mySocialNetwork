@@ -1,6 +1,6 @@
 const ADD_MESSAGE = "ADD-MESSAGE";
 
-type UsersArrayType = {
+export type UsersArrayType = {
     id: number
     name: string
 }

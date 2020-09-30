@@ -1,9 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import { useState } from "react";
 import styled from 'styled-components/macro';
 import Preloader from "../../common/preloader/preloader";
 import StatusWithHook from "./statusWithHook";
 import ContactsForm from './contactsForm';
+import { ProfileType } from "../../redux/profileReducer";
+import { ContactsFormType } from "./contactsForm";
 
 const ProfileDecor = styled.div`
 display: flex;
@@ -27,20 +29,30 @@ const Img = styled.img`
 width: 100%;
 `
 
-const ProfileInfo = (props) => {
+type PropsType = {
+    profile: ProfileType | null
+    updatePhoto: (file: File) => void
+    setContactsForm: (formData: ContactsFormType) => Promise<() => void>
+    isOwner: boolean
+    status: string
+    updateUserStatus: (status: string) => void
+}
+
+const ProfileInfo: FC<PropsType> = ({ profile, updatePhoto, setContactsForm, isOwner, status, updateUserStatus }) => {
 
     const [editMode, setEditMode] = useState(false);
 
-    if (!props.profile) {
+    if (!profile) {
         return <Preloader />
     }
-    const uploadPhoto = (e) => {
+    const uploadPhoto = ((e: any) => {
         if (e.target.files.length) {
-            props.updatePhoto(e.target.files[0])
+            updatePhoto(e.target.files[0])
         }
     }
-    const contactsFormSubmit = (formData) => {
-        props.setContactsForm(formData)
+    )
+    const contactsFormSubmit = (formData: ContactsFormType) => {
+        setContactsForm(formData)
             .then(() => {
                 setEditMode(false);
             })
@@ -51,31 +63,41 @@ const ProfileInfo = (props) => {
         <div>
             <ProfileDecor>
                 <ProfileAvatarWr>
-                    {props.profile.photos.large
-                        ? <Avatar src={props.profile.photos.large} alt='avatar' />
+                    {profile.photos.large
+                        ? <Avatar src={profile.photos.large} alt='avatar' />
                         : <Img src="https://html5css.ru/w3css/img_avatar3.png" alt="avatar" />}
 
-                    {props.isOwner ? <input onChange={uploadPhoto} type="file" /> : null}
-                    <StatusWithHook status={props.status} updateUserStatus={props.updateUserStatus} />
+                    {isOwner ? <input onChange={uploadPhoto} type="file" /> : null}
+                    <StatusWithHook status={status} updateUserStatus={updateUserStatus} />
                 </ProfileAvatarWr>
                 <Wrapper>
                     {
-                        editMode ? <ContactsForm initialValues={props.profile} profile={props.profile} onSubmit={contactsFormSubmit} /> : <Contacts profile={props.profile} setEditMode={setEditMode} />
+                        editMode ? <ContactsForm
+                            initialValues={profile}
+                            profile={profile}
+                            onSubmit={contactsFormSubmit} /> : <Contacts profile={profile} setEditMode={setEditMode} />
                     }
                 </Wrapper>
             </ProfileDecor>
         </div>
     )
 };
-
-export const Contact = ({ contactKey, contactValue }) => {
+type ContactPropsType = {
+    contactKey: string
+    contactValue: string
+}
+export const Contact: FC<ContactPropsType> = ({ contactKey, contactValue }) => {
     return (
         <div>
             {contactKey}: {contactValue}
         </div>
     )
 }
-const Contacts = ({ profile, setEditMode }) => {
+type ContactsPropsType = {
+    profile: ProfileType
+    setEditMode: (value: boolean) => void
+}
+const Contacts: FC<ContactsPropsType> = ({ profile, setEditMode }) => {
     return (
         <div>
             <div>{"My name is: " + profile.fullName}</div>
@@ -83,6 +105,7 @@ const Contacts = ({ profile, setEditMode }) => {
             <div>{profile.lookingForAJobDescription}</div>
             <div>{`a little about me: ${profile.aboutMe ? profile.aboutMe : ""}`}</div>
             <div><b>Contacts</b> {Object.keys(profile.contacts)
+                //@ts-ignore
                 .map(key => <Contact key={key} contactKey={key} contactValue={profile.contacts[key]} />)}
             </div>
             <button onClick={() => setEditMode(true)}>Edit</button>

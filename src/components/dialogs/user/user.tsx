@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { NavLink } from "react-router-dom";
 import styled from 'styled-components';
 import s from "./user.module.css";
@@ -18,12 +18,17 @@ margin-bottom: 10px;
 }
 `
 
-const User = (props) => {
+
+type PropsType = {
+    name: string
+    id: number
+}
+const User: FC<PropsType> = ({ name, id }) => {
     return (
         <Wrapper>
             <Img src="https://html5css.ru/w3css/img_avatar3.png" alt="user" />
-            <NavLink className={s.item} to={"/dialogs/" + props.id}>
-                {props.name}
+            <NavLink className={s.item} to={"/dialogs/" + id}>
+                {name}
             </NavLink>
         </Wrapper>
     )

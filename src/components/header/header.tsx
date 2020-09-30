@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
-import userPhoto from '../../assets/img/userPhoto.png';
+import userImg from '../../assets/img/userPhoto.png';
 
 const Head = styled.header`
   grid-area: header;
@@ -41,7 +41,14 @@ const AutorizedUserPhoto = styled.img`
 `
 
 
-const Header = (props) => {
+type PropsType = {
+  userPhoto: string | null
+  isAuth: boolean
+  login: string | null
+  logout: () => void
+}
+
+const Header: FC<PropsType> = ({ userPhoto, isAuth, login, logout }) => {
   return (
     <Head>
       <Img
@@ -49,10 +56,10 @@ const Header = (props) => {
         alt="logo"
       />
       <Wrapper>
-        {props.userPhoto ? <AutorizedUserPhoto src={props.userPhoto} alt="userPhoto" /> : <Img src={userPhoto} alt="userPhoto" />}
-        {props.isAuth ? <NavLinkS to="/profile"><User>{props.login}</User></NavLinkS>
+        {userPhoto ? <AutorizedUserPhoto src={userPhoto} alt="userPhoto" /> : <Img src={userImg} alt="userPhoto" />}
+        {isAuth ? <NavLinkS to="/profile"><User>{login}</User></NavLinkS>
           : <NavLinkS to="/login">Login</NavLinkS>}
-        {props.isAuth ? <button onClick={props.logout}>Logut</button> : null}
+        {isAuth ? <button onClick={logout}>Logout</button> : null}
 
       </Wrapper>
     </Head>

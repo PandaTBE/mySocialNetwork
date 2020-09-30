@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 
 const Img = styled.img`
@@ -20,13 +20,16 @@ const Like = styled.div`
   color: greenyellow;
 `
 
-
-const Post = (props) => {
+type PropsType = {
+  message: string
+  likeCount: number
+}
+const Post: FC<PropsType> = ({ message, likeCount }) => {
   return (
     <Wrapper>
       <Img src="https://html5css.ru/w3css/img_avatar3.png" alt="avatar" />
-      <Text>{props.message}</Text>
-      <Like>likes: {props.likeCount}</Like>
+      <Text>{message}</Text>
+      <Like>likes: {likeCount}</Like>
     </Wrapper>
   );
 };

@@ -1,15 +1,20 @@
 
-import { addMessage } from "../redux/dialogsReducer";
+import { addMessage, MessagesType, UsersArrayType } from "../redux/dialogsReducer";
 import Dialogs from "./dialogs";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { AppStateType } from "../redux/store-redux";
 
-const mapStateToProps = (state) => {
+type MapStateType = {
+    messages: Array<MessagesType>
+    users: Array<UsersArrayType>
+}
+
+const mapStateToProps = (state: AppStateType): MapStateType => {
     return {
         messages: state.dialogsPage.messages,
-        users: state.dialogsPage.users,
-        newMessageText: state.dialogsPage.newMessageText,
+        users: state.dialogsPage.users
     }
 };
 
