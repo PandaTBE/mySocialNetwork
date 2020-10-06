@@ -1,8 +1,5 @@
+import { Action } from "redux";
 
-type FriendsType = {
-    id: number
-    name: string
-}
 const initialState = {
     friends: [
         { id: 1, name: "Nikita" },
@@ -10,11 +7,13 @@ const initialState = {
         { id: 3, name: "Masha" }
     ] as Array<FriendsType>
 }
-type InitialStatetype = typeof initialState
-
-
-const sideBarReducer = (state = initialState, action: any): InitialStatetype => {
+const sideBarReducer = (state = initialState, action: Action): InitialStatetype => {
     return state
 };
-
 export default sideBarReducer;
+
+type InitialStatetype = typeof initialState
+type FriendsType = {
+    id: number
+    name: string
+}

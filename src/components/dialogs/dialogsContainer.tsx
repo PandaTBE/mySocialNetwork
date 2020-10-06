@@ -1,5 +1,5 @@
 
-import { addMessage, MessagesType, UsersArrayType } from "../redux/dialogsReducer";
+import { actions, MessagesType, UsersArrayType } from "../redux/dialogsReducer";
 import Dialogs from "./dialogs";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../hoc/withAuthRedirect";
@@ -17,6 +17,8 @@ const mapStateToProps = (state: AppStateType): MapStateType => {
         users: state.dialogsPage.users
     }
 };
+
+const { addMessage } = actions
 
 export default compose(
     connect(mapStateToProps, { addMessage }),

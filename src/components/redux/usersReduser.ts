@@ -1,11 +1,9 @@
 import { ResultCodesEnum } from './../../api/api';
-
 import { Dispatch } from "redux";
-import { ThunkAction } from "redux-thunk";
-import { usersAPI } from "../../api/api";
+import { usersAPI } from "../../api/usersApi";
 import { SingleUserType } from "../../types/types";
 import { updateObjectInArray } from "../utils/objectsHelpers";
-import { AppStateType, InferActionsTypes } from "./store-redux";
+import { InferActionsTypes, BaseThunkType } from "./store-redux";
 
 
 
@@ -81,7 +79,7 @@ const actions = {
 
 type ActionsTypes = InferActionsTypes<typeof actions>
 type DispatchType = Dispatch<ActionsTypes>
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+type ThunkType = BaseThunkType<ActionsTypes>
 
 
 export const getUsers = (currentPage: number, pageSize: number): ThunkType => {
